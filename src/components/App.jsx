@@ -15,7 +15,21 @@ export class App extends React.Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-  };
+	};
+	
+	componentDidMount() {
+		const contacts = localStorage.getItem('contacts');
+		const parsedContacts = JSON.parse(contacts);
+		if (parsedContacts) {
+			this.setState({contacts: parsedContacts});
+		}
+	}
+
+	componentDidUpdate(_, prevState) { 
+		if (this.state.contacts !== prevState.contacts) {
+			localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+		}
+	} 
 
   addNewContact = ({ name, number }) => {
     const isExistsContact = this.state.contacts.some(
